@@ -2,10 +2,10 @@
 
 Table of Contents
 
-Introduction
-Getting Started
-Structure of the Repository
-Contributing
+Introduction -
+Getting Started -
+Structure of the Repository - 
+Contributing - 
 
 
 

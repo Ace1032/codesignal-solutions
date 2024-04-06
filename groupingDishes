@@ -1,0 +1,93 @@
+Interview Practice >> Hash Tables (Solution In Java)
+
+You are given a list dishes, where each element consists of a list of strings beginning with the name of the dish, 
+followed by all the ingredients used in preparing it. You want to group the dishes by ingredients, so that for each
+ingredient you'll be able to find all the dishes that contain it (if there are at least 2 such dishes).
+
+Return an array where each element is a list beginning with the ingredient name, followed by the names of all the dishes 
+that contain this ingredient. The dishes inside each list should be sorted lexicographically, and the result array should 
+be sorted lexicographically by the names of the ingredients.
+
+
+String[][] groupingDishes(String[][] dishes) {
+		Map <String,HashSet<String>> ingredients_Dishes=new HashMap<>();
+		Map <String, HashSet<String>> dishesSet=new HashMap<>();
+		
+		for(String[] row:dishes) {
+			HashSet tempIn=new HashSet<>();
+ 			for(int i=1; i<row.length; i++) {
+ 				tempIn.add(row[i]);
+ 			}
+ 			ingredients_Dishes.put(row[0], tempIn);
+ 		}
+		String[] inList=allIngredientsInList(dishes);
+		inList= hasUsedMorethantwice(inList, ingredients_Dishes);
+		Arrays.sort(inList);
+		String[][] fiMultiArray=new String[inList.length][];
+		int rowNum=0;
+		for(String di:inList) {
+			HashSet<String> tempIngredSet=getDishesForIng(di,ingredients_Dishes );
+			String [] temp=new String[tempIngredSet.size()];
+			temp= tempIngredSet.toArray(temp);
+			Arrays.sort(temp);
+			temp=addingIngreIntoDishArray(di,temp);
+			fiMultiArray[rowNum++]=temp;
+		}
+		
+		return fiMultiArray;
+	}
+  
+String[] allIngredientsInList(String[][] dishes){
+		HashSet<String> list=new HashSet<>();
+			for(String[] row:dishes) {
+				for(int i=1; i<row.length; i++) {
+					list.add(row[i]);
+				}
+ 		}
+		String[] inlist=new String[(int)list.size()];
+		int i=0;
+		for(String s:list) {
+			inlist[i++]=(String)s;
+		}
+		return inlist;
+	}
+String[] hasUsedMorethantwice(String [] ingredi, Map <String,HashSet<String>> ingredients_Dishes) {
+		String[] temIngredi=new String[ingredi.length];
+		ArrayList<String> temIngredi1=new ArrayList<>();
+		
+		int j=0;
+		for(int i=0; i<ingredi.length;i++) {
+		int repetedIn=0;
+		for(Map.Entry<String, HashSet<String>> map :ingredients_Dishes.entrySet()) {
+			if(map.getValue().contains(ingredi[i])) {
+				repetedIn++;
+			}
+		}
+		if(repetedIn>1) 
+			temIngredi1.add(ingredi[i]);
+		}
+		String[] tempArray=new String [temIngredi1.size()];
+		tempArray=temIngredi1.toArray(tempArray);
+		return tempArray;
+	}
+HashSet<String> getDishesForIng(String ing,Map <String,HashSet<String>> ingredients_Dishes){
+		HashSet<String> dishSet=new HashSet<>();
+		for(Map.Entry<String, HashSet<String>> entry:ingredients_Dishes.entrySet() ) {
+			if(entry.getValue().contains(ing))
+				dishSet.add(entry.getKey());
+		}
+		
+		return dishSet;
+	}
+	
+String [] addingIngreIntoDishArray(String in, String[] dishList) {
+		String[] row=new String[dishList.length+1];
+		row[0]=in;
+		int i=1;
+		for(String s:dishList) {
+			row[i++]=s;
+		}
+		
+		return row;
+	} 
+	 

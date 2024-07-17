@@ -1,0 +1,84 @@
+/*
+
+Problem:
+Title: Merge Intervals
+
+Description:
+Given an array of intervals where intervals[i] = [start_i, end_i], merge all overlapping intervals, and return an array of the non-overlapping intervals that cover all the intervals in the input.
+
+Example 1:
+
+lua
+Copy code
+Input: intervals = [[1,3],[2,6],[8,10],[15,18]]
+Output: [[1,6],[8,10],[15,18]]
+Explanation: Since intervals [1,3] and [2,6] overlap, merge them into [1,6].
+Example 2:
+
+lua
+Copy code
+Input: intervals = [[1,4],[4,5]]
+Output: [[1,5]]
+Explanation: Intervals [1,4] and [4,5] are considered overlapping.
+
+
+*/
+
+import java.util.*;
+
+public class Main {
+    public static void main(String[] args) {
+    int[][] intervals = {
+      {1, 4}
+    };
+     
+    int[][] window = combineIntervals(intervals);
+    for(int i=0; i<window.length; i++){
+      System.out.print(window[i][0] +","+ window[i][1]+" ");
+    }
+    
+     
+  }
+  
+  
+  static int[][] combineIntervals(int[][] intervals){
+    
+    int left= 0;  int mid=0;  int right=0;
+    ArrayList<ArrayList<Integer>> list= new ArrayList<ArrayList<Integer>>();
+    
+      left= intervals[0][0];
+      right = intervals[0][1];
+      
+      if(intervals.length < 2){
+        return intervals;
+      }
+      
+      for(int i=1; i< intervals.length; i++ ){
+        if(intervals[i][0]<= right){
+          right = intervals[i][1];
+        }else{
+          left = intervals[i][0];
+          right = intervals[i][1];
+        }
+        
+        
+        
+        ArrayList<Integer> temp = new ArrayList<Integer>();
+        temp.add(left); temp.add(right);
+        list.add(temp);
+          
+      }
+     System.out.println(list.toString());
+    int[][] window =new int[list.size()][2];
+    int k=0;
+    for(ArrayList<Integer> interval : list ){
+      window[k][0]= interval.remove(0); window[k][1]= interval.remove(0);
+      k++;
+    }
+    
+    
+    
+  
+    return window;
+  }
+
